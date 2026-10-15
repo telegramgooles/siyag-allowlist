@@ -17,7 +17,9 @@ const validate = feed => {
 try {
   const [command, input, flag, ...extra] = process.argv.slice(2)
   if (!['add', 'remove', 'show', 'validate'].includes(command) || extra.length || (['show', 'validate'].includes(command) && input !== undefined) || (command === 'remove' && flag !== undefined) || (command === 'add' && flag !== undefined && flag !== '--subdomains')) throw new Error('Usage: node edit.cjs add <host-or-url> [--subdomains] | remove <host-or-url> | show | validate')
-  const feed = validate(JSON.parse(fs.readFileSync(file, 'utf8')))
+  const source = fs.readFileSync(file)
+  if (source.byteLength > 128 * 1024) throw new Error('The allowlist file exceeds 128 KiB.')
+  const feed = validate(JSON.parse(source.toString('utf8')))
   if (command === 'add' || command === 'remove') {
     if (!input) throw new Error('Enter a hostname or URL.')
     const host = new URL(input.includes('://') ? input : 'https://' + input).hostname.replace(/\.$/, '')
