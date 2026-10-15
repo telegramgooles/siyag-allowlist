@@ -1,0 +1,10 @@
+name: Validate allowlist
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node edit.cjs validate
