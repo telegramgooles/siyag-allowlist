@@ -1,4 +1,9 @@
 {
   "version": 1,
-  "domains": []
+  "domains": [
+    {
+      "host": "tailscale.com",
+      "includeSubdomains": false
+    }
+  ]
 }
